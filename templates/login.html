@@ -1,0 +1,25 @@
+{% extends "base.html" %}
+{% block title %}Вход — FestKG{% endblock %}
+{% block content %}
+<div class="auth-wrap">
+  <div class="auth-card">
+    <h1>Вход в FestKG</h1>
+    <p class="sub">Войдите, чтобы покупать билеты и подавать заявки</p>
+    <form method="post" class="form">
+      <div>
+        <label>Email</label>
+        <input type="email" name="email" value="{{ email }}" required autofocus>
+      </div>
+      <div>
+        <label>Пароль</label>
+        <input type="password" name="password" required>
+      </div>
+      <button class="btn btn-coral btn-block" type="submit">Войти</button>
+    </form>
+    <div class="auth-switch">
+      Нет аккаунта? <a href="{{ url_for('register') }}">Регистрация</a>
+      &middot; <a href="{{ url_for('register_business') }}">Регистрация бизнеса</a>
+    </div>
+  </div>
+</div>
+{% endblock %}

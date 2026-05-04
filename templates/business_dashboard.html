@@ -1,0 +1,112 @@
+{% extends "base.html" %}
+{% block title %}Кабинет бизнеса — FestKG{% endblock %}
+{% block content %}
+<div class="container">
+  <h1 style="margin:0 0 4px;">Кабинет бизнеса</h1>
+  <p style="margin:0 0 20px;color:var(--text-soft);">{{ biz.name }}{% if biz.city %} · {{ biz.city }}{% endif %}</p>
+
+  <div class="tabs-biz">
+    <a href="#overview" class="tab-link active" data-tab="overview">Обзор</a>
+    <a href="#applications" class="tab-link" data-tab="applications">Заявки</a>
+    <a href="#profile" class="tab-link" data-tab="profile">Профиль</a>
+  </div>
+
+  <section id="overview" class="tab-pane">
+    <div class="metrics">
+      <div class="metric"><div class="label">Доход (демо)</div><div class="value">{{ fmt_money(revenue) }} сом</div></div>
+      <div class="metric coral"><div class="label">Комиссия 10%</div><div class="value">{{ fmt_money(commission) }} сом</div></div>
+      <div class="metric"><div class="label">Чистая прибыль</div><div class="value">{{ fmt_money(net) }} сом</div></div>
+      <div class="metric"><div class="label">Всего заявок</div><div class="value" style="color:var(--text);">{{ total_apps }}</div></div>
+      <div class="metric"><div class="label">Одобрено</div><div class="value">{{ approved }}</div></div>
+      <div class="metric coral"><div class="label">На рассмотрении</div><div class="value">{{ pending }}</div></div>
+    </div>
+
+    <div class="section">
+      <h2>Подать заявку на фестиваль</h2>
+      <form method="post" action="{{ url_for('business_apply') }}" class="form" style="max-width:600px;">
+        <div>
+          <label>Фестиваль</label>
+          <select name="festival_id" required>
+            {% for f in festivals_list %}<option value="{{ f.id }}">{{ f.name }}</option>{% endfor %}
+          </select>
+        </div>
+        <div>
+          <label>Тип точки</label>
+          <select name="booth_type">
+            <option>Стандарт</option><option>Премиум</option><option>Фуд-корт</option><option>Шоу-кейс</option>
+          </select>
+        </div>
+        <div><label>Комментарий</label><textarea name="note" rows="3" placeholder="Что планируете представить"></textarea></div>
+        <button class="btn btn-green" type="submit">Отправить заявку</button>
+      </form>
+    </div>
+  </section>
+
+  <section id="applications" class="tab-pane" style="display:none;">
+    <h2 style="margin-top:0;">Мои заявки</h2>
+    {% if not apps %}
+      <p style="color:var(--text-soft)">Заявок пока нет.</p>
+    {% endif %}
+    {% for a in apps %}
+      <div class="app-row">
+        <div>
+          <div style="font-weight:700;">{{ a.fname }}</div>
+          <div style="color:var(--text-soft);font-size:13px;">{{ a.booth_type }} · {{ a.created_at[:10] }}</div>
+          {% if a.note %}<div style="color:var(--text-soft);font-size:13px;margin-top:4px;">{{ a.note }}</div>{% endif %}
+        </div>
+        <div style="display:flex;gap:8px;align-items:center;">
+          <span class="status {{ a.status }}">
+            {% if a.status == 'approved' %}Одобрено
+            {% elif a.status == 'pending' %}На рассмотрении
+            {% else %}Отклонено{% endif %}
+          </span>
+          {% if a.status == 'pending' %}
+            <form method="post" action="{{ url_for('business_app_action', app_id=a.id, action='approve') }}" style="display:inline;">
+              <button class="btn btn-sm btn-green" type="submit">Подтв.</button>
+            </form>
+            <form method="post" action="{{ url_for('business_app_action', app_id=a.id, action='reject') }}" style="display:inline;">
+              <button class="btn btn-sm" type="submit">Откл.</button>
+            </form>
+          {% endif %}
+        </div>
+      </div>
+    {% endfor %}
+  </section>
+
+  <section id="profile" class="tab-pane" style="display:none;">
+    <h2 style="margin-top:0;">Профиль компании</h2>
+    <form method="post" action="{{ url_for('business_profile') }}" class="form" style="max-width:600px;">
+      <div><label>Название</label><input name="name" value="{{ biz.name or '' }}" required></div>
+      <div><label>Категория</label>
+        <select name="category">
+          {% for c in ['Гастро','Ремёсла','Сувениры','Услуги','Другое'] %}
+            <option {% if biz.category == c %}selected{% endif %}>{{ c }}</option>
+          {% endfor %}
+        </select>
+      </div>
+      <div><label>Город</label><input name="city" value="{{ biz.city or '' }}"></div>
+      <div><label>Телефон</label><input name="phone" value="{{ biz.phone or '' }}"></div>
+      <div><label>Описание</label><textarea name="description" rows="4">{{ biz.description or '' }}</textarea></div>
+      <button class="btn btn-green" type="submit">Сохранить</button>
+    </form>
+  </section>
+</div>
+
+<script>
+  const links = document.querySelectorAll('.tab-link');
+  const panes = document.querySelectorAll('.tab-pane');
+  function showTab(name) {
+    links.forEach(l => l.classList.toggle('active', l.dataset.tab === name));
+    panes.forEach(p => p.style.display = (p.id === name ? '' : 'none'));
+  }
+  links.forEach(l => l.addEventListener('click', e => {
+    e.preventDefault();
+    showTab(l.dataset.tab);
+    history.replaceState(null, '', '#' + l.dataset.tab);
+  }));
+  if (location.hash) {
+    const t = location.hash.slice(1);
+    if (document.getElementById(t)) showTab(t);
+  }
+</script>
+{% endblock %}

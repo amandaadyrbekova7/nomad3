@@ -1,0 +1,67 @@
+{% extends "base.html" %}
+{% block title %}{{ f.name }} — FestKG{% endblock %}
+{% block content %}
+<div class="container">
+  <a href="{{ url_for('festivals') }}" style="color:var(--text-soft);font-size:14px;">← К списку фестивалей</a>
+
+  <div class="detail-hero" style="margin-top:12px;">
+    <div class="emoji">{{ f.cover_emoji }}</div>
+    <div>
+      <h1>{{ f.name }}</h1>
+      <div class="detail-meta">
+        <span>📅 {{ f.duration_label }}</span>
+        <span>📍 {{ f.city }}</span>
+        <span>⏱ {{ f.duration_days }} {% if f.duration_days == 1 %}день{% elif f.duration_days < 5 %}дня{% else %}дней{% endif %}</span>
+      </div>
+      <div class="tags" style="margin-top:8px;">
+        {% for tag in f.categories.split(',') %}<span class="tag">{{ tag }}</span>{% endfor %}
+      </div>
+      <p style="margin:12px 0 0;color:var(--text-soft);">{{ f.description }}</p>
+    </div>
+  </div>
+
+  <div class="section">
+    <h2>Тарифы и билеты</h2>
+    <div class="tariffs">
+      {% for t in tariffs %}
+        <div class="tariff">
+          <h4>{{ t.name }}</h4>
+          {% if t.description %}<div class="desc">{{ t.description }}</div>{% endif %}
+          {% if t.price > 0 %}
+            <div class="price-big">{{ fmt_money(t.price) }} сом</div>
+          {% else %}
+            <div class="price-big free">Бесплатно</div>
+          {% endif %}
+          <div class="seats">Осталось мест: {{ t.seats_left }}</div>
+          {% if t.seats_left > 0 %}
+            <a class="btn btn-coral" href="{{ url_for('buy', tariff_id=t.id) }}">Купить билет</a>
+          {% else %}
+            <button class="btn" disabled>Распродано</button>
+          {% endif %}
+        </div>
+      {% endfor %}
+    </div>
+  </div>
+
+  <div class="section">
+    <h2>Программа фестиваля</h2>
+    {% for day, items in schedule.items() %}
+      <div class="schedule-day">
+        <h3>{{ day }}</h3>
+        <div class="schedule-list">
+          {% for s in items %}
+            <div class="schedule-item">
+              <div class="schedule-time">{{ s.time }}</div>
+              <div>
+                <div class="schedule-title">{{ s.title }}</div>
+                {% if s.description %}<div class="schedule-desc">{{ s.description }}</div>{% endif %}
+                {% if s.stage %}<div class="schedule-stage">📍 {{ s.stage }}</div>{% endif %}
+              </div>
+            </div>
+          {% endfor %}
+        </div>
+      </div>
+    {% endfor %}
+  </div>
+</div>
+{% endblock %}

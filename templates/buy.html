@@ -1,0 +1,44 @@
+{% extends "base.html" %}
+{% block title %}Покупка билета — {{ f.name }}{% endblock %}
+{% block content %}
+<div class="container">
+  <a href="{{ url_for('festival_detail', slug=f.slug) }}" style="color:var(--text-soft);font-size:14px;">← Назад</a>
+  <div class="auth-card" style="margin:16px auto;">
+    <h1>Оформление билета</h1>
+    <p class="sub">{{ f.name }} · {{ f.duration_label }}</p>
+
+    <div style="background:var(--bg);padding:14px;border-radius:10px;margin-bottom:16px;">
+      <div style="font-weight:700;font-size:16px;">{{ t.name }}</div>
+      {% if t.description %}<div style="color:var(--text-soft);font-size:13px;margin-top:4px;">{{ t.description }}</div>{% endif %}
+      <div style="margin-top:8px;font-size:18px;font-weight:700;color:{% if t.price>0 %}var(--coral){% else %}var(--green){% endif %};">
+        {% if t.price>0 %}{{ fmt_money(t.price) }} сом{% else %}Бесплатно{% endif %}
+      </div>
+    </div>
+
+    <form method="post" class="form" id="buyForm">
+      <div>
+        <label>Количество билетов</label>
+        <input type="number" name="quantity" id="qty" value="1" min="1" max="{{ t.seats_left }}" required>
+      </div>
+      <div style="display:flex;justify-content:space-between;padding:12px 0;border-top:1px solid var(--border);font-size:18px;">
+        <span>Итого:</span>
+        <strong id="total" style="color:var(--coral);">{{ fmt_money(t.price) }} сом</strong>
+      </div>
+      <button class="btn btn-coral btn-block" type="submit">
+        {% if t.price > 0 %}Оплатить{% else %}Получить билет{% endif %}
+      </button>
+    </form>
+  </div>
+</div>
+<script>
+  const price = {{ t.price }};
+  const qty = document.getElementById('qty');
+  const total = document.getElementById('total');
+  function update() {
+    const q = Math.max(1, parseInt(qty.value || '1'));
+    const sum = q * price;
+    total.textContent = sum > 0 ? sum.toLocaleString('ru') + ' сом' : 'Бесплатно';
+  }
+  qty.addEventListener('input', update);
+</script>
+{% endblock %}

@@ -1,0 +1,47 @@
+{% extends "base.html" %}
+{% block title %}Фестивали Кыргызстана — FestKG{% endblock %}
+{% block content %}
+<div class="container">
+  <h1 style="margin:0 0 6px;">Фестивали Кыргызстана</h1>
+  <p style="margin:0 0 16px;color:var(--text-soft);">Афиша 2026 · билеты, программы, длительность</p>
+
+  <div class="chips">
+    {% for c in cats %}
+      <a class="chip {% if c == current_cat %}active{% endif %}" href="{{ url_for('festivals', cat=c) }}">{{ c }}</a>
+    {% endfor %}
+  </div>
+
+  {% if not items %}
+    <p style="color:var(--text-soft)">В этой категории пока нет фестивалей.</p>
+  {% endif %}
+
+  <div class="grid">
+    {% for f in items %}
+      <a class="card" href="{{ url_for('festival_detail', slug=f.slug) }}" style="color:inherit;text-decoration:none;">
+        <div class="card-cover">{{ f.cover_emoji }}</div>
+        <div class="card-body">
+          <h3>{{ f.name }}</h3>
+          <div class="meta">
+            <span>📅 {{ f.duration_label }}</span>
+            <span>📍 {{ f.city }}</span>
+            <span>⏱ {{ f.duration_days }} {% if f.duration_days == 1 %}день{% elif f.duration_days < 5 %}дня{% else %}дней{% endif %}</span>
+          </div>
+          <div class="tags">
+            {% for tag in f.categories.split(',') %}
+              <span class="tag">{{ tag }}</span>
+            {% endfor %}
+          </div>
+          <div class="price-row">
+            <span style="color:var(--text-soft);font-size:13px;">от</span>
+            {% if f.min_price and f.min_price > 0 %}
+              <span class="price">{{ fmt_money(f.min_price) }} сом</span>
+            {% else %}
+              <span class="price free">Бесплатно</span>
+            {% endif %}
+          </div>
+        </div>
+      </a>
+    {% endfor %}
+  </div>
+</div>
+{% endblock %}

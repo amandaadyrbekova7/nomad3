@@ -1,0 +1,21 @@
+{% extends "base.html" %}
+{% block title %}Регистрация — FestKG{% endblock %}
+{% block content %}
+<div class="auth-wrap">
+  <div class="auth-card">
+    <h1>Регистрация</h1>
+    <p class="sub">Создайте аккаунт за 30 секунд</p>
+    <form method="post" class="form">
+      <div><label>Email</label><input type="email" name="email" value="{{ email or '' }}" required></div>
+      <div><label>Пароль (мин. 6)</label><input type="password" name="password" minlength="6" required></div>
+      <div><label>Имя</label><input type="text" name="full_name" value="{{ full_name or '' }}"></div>
+      <div><label>Телефон</label><input type="tel" name="phone" value="{{ phone or '' }}" placeholder="+996 ..."></div>
+      <button class="btn btn-coral btn-block" type="submit">Создать аккаунт</button>
+    </form>
+    <div class="auth-switch">
+      Уже есть аккаунт? <a href="{{ url_for('login') }}">Войти</a>
+      <br>Вы — бизнес? <a href="{{ url_for('register_business') }}">Регистрация бизнеса</a>
+    </div>
+  </div>
+</div>
+{% endblock %}

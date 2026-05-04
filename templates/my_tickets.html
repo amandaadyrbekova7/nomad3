@@ -1,0 +1,31 @@
+{% extends "base.html" %}
+{% block title %}Мои билеты — FestKG{% endblock %}
+{% block content %}
+<div class="container">
+  <h1>Мои билеты</h1>
+  {% if not tickets %}
+    <p style="color:var(--text-soft)">У вас пока нет билетов. <a href="{{ url_for('festivals') }}">Перейти к фестивалям →</a></p>
+  {% endif %}
+  <div class="grid">
+    {% for tk in tickets %}
+      <a class="card" href="{{ url_for('ticket_view', ticket_id=tk.id) }}" style="color:inherit;text-decoration:none;">
+        <div class="card-cover">{{ tk.emoji }}</div>
+        <div class="card-body">
+          <h3>{{ tk.fname }}</h3>
+          <div class="meta">
+            <span>📍 {{ tk.fcity }}</span>
+            <span>📅 {{ tk.fstart }}</span>
+            <span>🎟 {{ tk.tname }} × {{ tk.quantity }}</span>
+          </div>
+          <div class="price-row">
+            <span style="font-family:monospace;font-size:12px;color:var(--text-soft);">{{ tk.code }}</span>
+            <span class="price {% if tk.total_price == 0 %}free{% endif %}">
+              {% if tk.total_price > 0 %}{{ fmt_money(tk.total_price) }} сом{% else %}Free{% endif %}
+            </span>
+          </div>
+        </div>
+      </a>
+    {% endfor %}
+  </div>
+</div>
+{% endblock %}

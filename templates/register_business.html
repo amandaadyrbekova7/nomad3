@@ -1,0 +1,34 @@
+{% extends "base.html" %}
+{% block title %}Регистрация бизнеса — FestKG{% endblock %}
+{% block content %}
+<div class="auth-wrap">
+  <div class="auth-card">
+    <h1>Регистрация бизнеса</h1>
+    <p class="sub">Подавайте заявки на участие в фестивалях</p>
+    <form method="post" class="form">
+      <div><label>Email</label><input type="email" name="email" value="{{ email or '' }}" required></div>
+      <div><label>Пароль (мин. 6)</label><input type="password" name="password" minlength="6" required></div>
+      <div><label>Контактное лицо</label><input type="text" name="full_name" value="{{ full_name or '' }}"></div>
+      <div><label>Телефон</label><input type="tel" name="phone" value="{{ phone or '' }}" placeholder="+996 ..."></div>
+      <hr style="border:none;border-top:1px solid var(--border);margin:8px 0;">
+      <div><label>Название компании *</label><input type="text" name="biz_name" value="{{ biz_name or '' }}" required></div>
+      <div><label>Категория</label>
+        <select name="category">
+          <option value="Гастро">Гастро</option>
+          <option value="Ремёсла">Ремёсла</option>
+          <option value="Сувениры">Сувениры</option>
+          <option value="Услуги">Услуги</option>
+          <option value="Другое">Другое</option>
+        </select>
+      </div>
+      <div><label>Город</label><input type="text" name="city" value="{{ city or '' }}"></div>
+      <div><label>О компании</label><textarea name="description" rows="3">{{ description or '' }}</textarea></div>
+      <button class="btn btn-green btn-block" type="submit">Создать бизнес-аккаунт</button>
+    </form>
+    <div class="auth-switch">
+      <a href="{{ url_for('login') }}">Войти</a> &middot;
+      <a href="{{ url_for('register') }}">Обычная регистрация</a>
+    </div>
+  </div>
+</div>
+{% endblock %}

@@ -1,0 +1,57 @@
+<component name="InspectionProjectProfileManager">
+  <profile version="1.0">
+    <option name="myName" value="Project Default" />
+    <inspection_tool class="PyInterpreterInspection" enabled="false" level="WARNING" enabled_by_default="false" />
+    <inspection_tool class="PyPackageRequirementsInspection" enabled="true" level="WARNING" enabled_by_default="true">
+      <option name="ignoredPackages">
+        <list>
+          <option value="annotated-doc" />
+          <option value="anyio" />
+          <option value="asgiref" />
+          <option value="certifi" />
+          <option value="click" />
+          <option value="colorama" />
+          <option value="Django" />
+          <option value="filelock" />
+          <option value="fsspec" />
+          <option value="h11" />
+          <option value="hf-xet" />
+          <option value="httpcore" />
+          <option value="httpx" />
+          <option value="huggingface_hub" />
+          <option value="idna" />
+          <option value="joblib" />
+          <option value="markdown-it-py" />
+          <option value="mdurl" />
+          <option value="narwhals" />
+          <option value="numpy" />
+          <option value="packaging" />
+          <option value="plotly" />
+          <option value="psycopg2-binary" />
+          <option value="Pygments" />
+          <option value="PyYAML" />
+          <option value="regex" />
+          <option value="rich" />
+          <option value="safetensors" />
+          <option value="scikit-learn" />
+          <option value="scipy" />
+          <option value="shellingham" />
+          <option value="sqlparse" />
+          <option value="threadpoolctl" />
+          <option value="tokenizers" />
+          <option value="tqdm" />
+          <option value="transformers" />
+          <option value="typer" />
+          <option value="typer-slim" />
+          <option value="typing_extensions" />
+          <option value="tzdata" />
+          <option value="Flask" />
+          <option value="Flask-SQLAlchemy" />
+          <option value="python-dotenv" />
+          <option value="openai" />
+        </list>
+      </option>
+    </inspection_tool>
+    <inspection_tool class="UnsatisfiedRequirementInspection" enabled="false" level="WARNING" enabled_by_default="false" />
+  </profile>
+</component>

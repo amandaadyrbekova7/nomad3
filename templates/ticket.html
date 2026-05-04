@@ -1,0 +1,25 @@
+{% extends "base.html" %}
+{% block title %}Билет {{ tk.code }}{% endblock %}
+{% block content %}
+<div class="container">
+  <div class="ticket">
+    <div style="font-size:48px;">{{ f.cover_emoji }}</div>
+    <h1 style="margin:8px 0 4px;">{{ f.name }}</h1>
+    <div style="color:var(--text-soft);">{{ f.city }} · {{ f.start_date }}</div>
+    <div class="qr">
+      <img src="{{ url_for('ticket_qr', ticket_id=tk.id) }}" alt="QR код">
+    </div>
+    <div class="code">{{ tk.code }}</div>
+    <div style="margin:12px 0;color:var(--text-soft);font-size:14px;">
+      {{ t.name }} × {{ tk.quantity }}
+    </div>
+    <div style="font-size:22px;font-weight:800;color:var(--coral);">
+      {% if tk.total_price > 0 %}{{ fmt_money(tk.total_price) }} сом{% else %}Бесплатный вход{% endif %}
+    </div>
+    <div style="margin-top:20px;display:flex;gap:8px;justify-content:center;flex-wrap:wrap;">
+      <a class="btn" href="{{ url_for('my_tickets') }}">Мои билеты</a>
+      <a class="btn btn-coral" href="{{ url_for('festivals') }}">К фестивалям</a>
+    </div>
+  </div>
+</div>
+{% endblock %}
