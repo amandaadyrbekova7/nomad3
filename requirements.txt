@@ -1,4 +1,14 @@
+blinker==1.9.0
+click==8.3.3
+colorama==0.4.6
 Flask==3.0.3
+gunicorn==25.3.0
+itsdangerous==2.2.0
+Jinja2==3.1.6
+MarkupSafe==3.0.3
+packaging==26.2
+pillow==10.4.0
+pypng==0.20220715.0
+qrcode==7.4.2
+typing_extensions==4.15.0
 Werkzeug==3.0.4
-qrcode[pil]==7.4.2
-Pillow==10.4.0
